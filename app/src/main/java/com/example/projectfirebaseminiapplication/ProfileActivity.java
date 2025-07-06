@@ -2,8 +2,13 @@ package com.example.projectfirebaseminiapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -19,10 +24,15 @@ import java.util.ArrayList;
 public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
+    private ArrayList<Recipe> allRecipes = new ArrayList<>();
+    private ArrayList<Recipe> filteredRecipes = new ArrayList<>();
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private RecipeAdapter adapter;
+    private static final int ADD_RECIPE_REQUEST_CODE = 101;
+
     private ArrayList<Recipe> userRecipes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             String name = documentSnapshot.getString("name");
                             String email = documentSnapshot.getString("email");
-                            String imageUrl = documentSnapshot.getString("imageUri");
+                            String imageUrl = documentSnapshot.getString("imageUrl");
 
                             binding.userNameTextView.setText(name != null ? name : "No Name");
                             binding.userEmailTextView.setText(email != null ? email : "No Email");
@@ -68,23 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-                @Override
-                public void onEditClicked(Recipe recipe) {
-                    Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
-                    intent.putExtra("recipeId", recipe.getDocumentId());
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onDeleteClicked(Recipe recipe) {
-                    firestore.collection("recipes").document(recipe.getDocumentId())
-                            .delete()
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(ProfileActivity.this, "تم حذف الوصفة", Toast.LENGTH_SHORT).show();
-                                loadUserRecipes();  // هنا نحمل كل الوصفات بدون فلترة
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "فشل حذف الوصفة: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                }
             });
 
             binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -100,10 +93,18 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserRecipes();
+    }
 
     private void loadUserRecipes() {
-        binding.progressBar.setVisibility(android.view.View.VISIBLE);
-        firestore.collection("recipes")  // هنا بدون شرط whereEqualTo
+        binding.progressBar.setVisibility(View.VISIBLE);
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firestore.collection("recipes")
+                .whereEqualTo("userId", currentUserId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     userRecipes.clear();
@@ -113,11 +114,25 @@ public class ProfileActivity extends AppCompatActivity {
                         userRecipes.add(recipe);
                     }
                     adapter.notifyDataSetChanged();
-                    binding.progressBar.setVisibility(android.view.View.GONE);
+                    binding.progressBar.setVisibility(View.GONE);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "فشل في تحميل الوصفات", Toast.LENGTH_SHORT).show();
-                    binding.progressBar.setVisibility(android.view.View.GONE);
+                    binding.progressBar.setVisibility(View.GONE);
                 });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_RECIPE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Recipe newRecipe = (Recipe) data.getSerializableExtra("newRecipe");
+            if (newRecipe != null) {
+                allRecipes.add(0, newRecipe);
+                Toast.makeText(this, "تمت إضافة وصفة جديدة: " + newRecipe.getName(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
 }

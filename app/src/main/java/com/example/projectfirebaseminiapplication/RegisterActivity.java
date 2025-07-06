@@ -44,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // إعداد الدول
         String[] countries = {"فلسطين", "الأردن", "مصر", "سوريا", "لبنان"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countries);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,7 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        // رفع الصورة إلى Cloudinary
         MediaManager.get().upload(imageUri)
                 .callback(new UploadCallback() {
                     @Override

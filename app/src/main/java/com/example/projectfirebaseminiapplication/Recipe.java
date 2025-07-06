@@ -10,11 +10,14 @@ public class Recipe implements Serializable {
     private String category;
     private String videoUrl;
     private String imageUrl;
+    private String userId;  // معرف صاحب الوصفة
 
     public Recipe() {
+        // مطلوب لـ Firestore
     }
 
-    public Recipe(String documentId, String name, String ingredients, String steps, String category, String videoUrl, String imageUrl) {
+    public Recipe(String documentId, String name, String ingredients, String steps,
+                  String category, String videoUrl, String imageUrl, String userId) {
         this.documentId = documentId;
         this.name = name;
         this.ingredients = ingredients;
@@ -22,31 +25,83 @@ public class Recipe implements Serializable {
         this.category = category;
         this.videoUrl = videoUrl;
         this.imageUrl = imageUrl;
-
+        this.userId = userId;
     }
 
-    // getters & setters
-
-    public String getDocumentId() { return documentId; }
-    public void setDocumentId(String documentId) { this.documentId = documentId; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getIngredients() { return ingredients; }
-    public void setIngredients(String ingredients) { this.ingredients = ingredients; }
-
-    public String getSteps() { return steps; }
-    public void setSteps(String steps) { this.steps = steps; }
-
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
-
-    public String getVideoUrl() { return videoUrl; }
-    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public Recipe(String documentId, String name, String ingredients, String steps,
+                  String category, String videoUrl, String imageUrl) {
+        this.documentId = documentId;
+        this.name = name;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.category = category;
+        this.videoUrl = videoUrl;
+        this.imageUrl = imageUrl;
+        this.userId = "";
+    }
 
 
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public String getSteps() {
+        return steps;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

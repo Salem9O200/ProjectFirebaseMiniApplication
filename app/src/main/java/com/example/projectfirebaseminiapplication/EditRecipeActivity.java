@@ -12,6 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.example.projectfirebaseminiapplication.databinding.ActivityEditRecipeBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class EditRecipeActivity extends AppCompatActivity {
@@ -162,11 +166,40 @@ public class EditRecipeActivity extends AppCompatActivity {
     }
 
     private void uploadImageToCloudinary(Uri imageUri, ImageUploadCallback callback) {
-        binding.recipeImageView.postDelayed(() -> {
-            String fakeUrl = "https://res.cloudinary.com/ddsiz8xnl/image/upload/v1751532736/maqluba_tdiajq.jpg";
-            callback.onSuccess(fakeUrl);
-        }, 2000);
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        MediaManager.get().upload(imageUri)
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        String imageUrl = resultData.get("secure_url").toString();
+                        callback.onSuccess(imageUrl);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        callback.onFailure(error.getDescription());
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        callback.onFailure(error.getDescription());
+                    }
+                })
+                .dispatch();
     }
+
 
     private void saveUpdatedRecipe(String title, String ingredients, String steps,
                                    String category, String videoUrl, String imageUrl) {

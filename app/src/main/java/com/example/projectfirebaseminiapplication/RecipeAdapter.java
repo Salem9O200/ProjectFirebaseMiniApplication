@@ -1,11 +1,8 @@
 package com.example.projectfirebaseminiapplication;
 
-import android.content.Intent;
+
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,8 +50,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 .into(holder.binding.recipeImageView);
         holder.itemView.setOnClickListener(v -> listener.onItemClicked(recipe));
 
-        holder.binding.editIcon.setOnClickListener(v -> listener.onEditClicked(recipe));
-        holder.binding.deleteIcon.setOnClickListener(v -> listener.onDeleteClicked(recipe));
+
     }
 
     @Override
@@ -93,8 +89,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     .into(binding.recipeImageView);
 
             binding.getRoot().setOnClickListener(v -> listener.onItemClicked(recipe));
-            binding.editIcon.setOnClickListener(v -> listener.onEditClicked(recipe));
-            binding.deleteIcon.setOnClickListener(v -> listener.onDeleteClicked(recipe));
+            
         }
     }
 

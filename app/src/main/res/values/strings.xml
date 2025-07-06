@@ -29,9 +29,11 @@
     <string name="delete">Delete</string>
     <string name="user_name">User Name</string>
     <string name="user_example_com">user@example.com</string>
-    <string name="user_image">صورة المستخدم</string>
+    <string name="user_image">UserImage</string>
     <string name="profile">Profile</string>
     <string name="recipeshare">RecipeShare</string>
+    <string name="Language">Switch language</string>
+
 
 
     <string-array name="countries_array">

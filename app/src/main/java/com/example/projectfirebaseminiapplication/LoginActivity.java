@@ -18,12 +18,18 @@ import com.example.projectfirebaseminiapplication.databinding.ActivityLoginBindi
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
+
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private FirebaseAuth firebaseAuth;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "loginPrefs";
+
+
+
+
     private ActivityResultLauncher<Intent> registerLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
+
+
         if (sharedPreferences.getBoolean("rememberMe", false)) {
             String savedEmail = sharedPreferences.getString("email", "");
             String savedPassword = sharedPreferences.getString("password", "");
@@ -44,12 +52,10 @@ public class LoginActivity extends AppCompatActivity {
             binding.rememberMeCheckBox.setChecked(true);
         }
 
-        // Launcher لفتح شاشة التسجيل
         registerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        // استرجاع الإيميل وكلمة المرور من شاشة التسجيل (اختياري)
                         String email = result.getData().getStringExtra("email");
                         String password = result.getData().getStringExtra("password");
                         binding.emailEditText.setText(email);
@@ -59,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         binding.loginButton.setOnClickListener(v -> loginUser());
+
 
         binding.registerRedirect.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -110,4 +117,5 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

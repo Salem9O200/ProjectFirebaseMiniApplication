@@ -46,7 +46,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private void setupUI() {
         binding.screenTitleTextView.setText("تفاصيل الوصفة");
 
-        // تحميل الصورة
         Glide.with(this)
                 .load(recipe.getImageUrl())
                 .placeholder(R.drawable.ic_profile)

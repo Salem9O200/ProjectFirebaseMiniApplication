@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,15 +29,26 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<Recipe> allRecipes = new ArrayList<>();
     private ArrayList<Recipe> filteredRecipes = new ArrayList<>();
     private String selectedCategory = "All";
-
     private FirebaseFirestore firestore;
-
-    private final int ADD_RECIPE_REQUEST_CODE = 101; // بدل استخدام registerForActivityResult
-
+    private final int ADD_RECIPE_REQUEST_CODE = 101;
+    private final ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult o) {
+                    if (o.getResultCode() == RESULT_OK && o.getData() != null) {
+                        Recipe newRecipe = (Recipe) o.getData().getSerializableExtra("newRecipe");
+                        if (newRecipe != null) {
+                            allRecipes.add(0, newRecipe);
+                            filterRecipes(binding.searchView.getQuery().toString());
+                            Toast.makeText(HomeActivity.this, "تمت إضافة وصفة جديدة: " + newRecipe.getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -48,24 +63,6 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("recipe", recipe);
                 startActivity(intent);
             }
-
-            @Override
-            public void onEditClicked(Recipe recipe) {
-                Intent intent = new Intent(HomeActivity.this, EditRecipeActivity.class);
-                intent.putExtra("recipeId", recipe.getDocumentId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDeleteClicked(Recipe recipe) {
-                firestore.collection("recipes").document(recipe.getDocumentId())
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(HomeActivity.this, "تم حذف الوصفة", Toast.LENGTH_SHORT).show();
-                            loadRecipes();
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(HomeActivity.this, "فشل حذف الوصفة: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
         });
         binding.recipesRecyclerView.setAdapter(adapter);
 
@@ -74,12 +71,12 @@ public class HomeActivity extends AppCompatActivity {
         loadRecipes();
 
         binding.fabAddRecipe.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, AddRecipeActivity.class);
-            startActivityForResult(intent, ADD_RECIPE_REQUEST_CODE);
+            Intent intent = new Intent(getApplicationContext(), AddRecipeActivity.class);
+            addRecipeLauncher.launch(intent);
         });
 
         binding.fabProfile.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
         });
 
         binding.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -168,8 +165,8 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             String lowerQuery = query.toLowerCase();
             for (Recipe r : allRecipes) {
-                boolean matchesCategory = selectedCategory.equals("All") || r.getCategory().equalsIgnoreCase(selectedCategory);
-                boolean matchesQuery = r.getName().toLowerCase().contains(lowerQuery);
+                    boolean matchesCategory = selectedCategory.equals("All") || r.getCategory().equalsIgnoreCase(selectedCategory);
+                    boolean matchesQuery = r.getName().toLowerCase().contains(lowerQuery);
                 if (matchesCategory && matchesQuery) {
                     filteredRecipes.add(r);
                 }
@@ -185,7 +182,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.recipesRecyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
-    // استقبال وصفة جديدة من AddRecipeActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

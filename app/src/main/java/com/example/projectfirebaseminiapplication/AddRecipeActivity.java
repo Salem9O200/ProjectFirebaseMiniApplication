@@ -14,7 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.projectfirebaseminiapplication.databinding.ActivityAddRecipeBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddRecipeActivity extends AppCompatActivity {
 
@@ -59,6 +63,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         String steps = binding.stepsEditText.getText().toString().trim();
         String category = binding.categorySpinner.getSelectedItem() != null
                 ? binding.categorySpinner.getSelectedItem().toString() : "";
+        String imageUrl = binding.selectImageButton.getText().toString().trim();
         String videoUrl = binding.videoUrlEditText.getText().toString().trim();
 
         if (TextUtils.isEmpty(title)) {
@@ -84,23 +89,26 @@ public class AddRecipeActivity extends AppCompatActivity {
             Toast.makeText(this, "يرجى اختيار صورة للوصفة", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Map<String, Object> recipeData = new HashMap<>();
+        recipeData.put("name", title);
+        recipeData.put("category", category);
+        recipeData.put("ingredients", ingredients);
+        recipeData.put("steps", steps);
+        recipeData.put("videoUrl", videoUrl);
+        recipeData.put("imageUrl", imageUrl);
+        recipeData.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
         binding.progressBar.setVisibility(android.view.View.VISIBLE);
         binding.addRecipeButton.setEnabled(false);
 
-        uploadImageToCloudinary(selectedImageUri, new ImageUploadCallback() {
-            @Override
-            public void onSuccess(String imageUrl) {
-                saveRecipeToFirestore(title, ingredients, steps, category, videoUrl, imageUrl);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                binding.progressBar.setVisibility(android.view.View.GONE);
-                binding.addRecipeButton.setEnabled(true);
-                Toast.makeText(AddRecipeActivity.this, "فشل رفع الصورة: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+        FirebaseFirestore.getInstance().collection("recipes")
+                .add(recipeData)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "تمت إضافة الوصفة بنجاح", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "فشل في إضافة الوصفة", Toast.LENGTH_SHORT).show();
+                });
     }
 
     interface ImageUploadCallback {
@@ -109,7 +117,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private void uploadImageToCloudinary(Uri imageUri, ImageUploadCallback callback) {
-        // مؤقتا محاكاة رفع الصورة - استبدل هذا بالكود الحقيقي للرفع
         binding.recipeImageView.postDelayed(() -> {
             String fakeUrl = "https://res.cloudinary.com/ddsiz8xnl/image/upload/v1751532736/maqluba_tdiajq.jpg";
             callback.onSuccess(fakeUrl);
@@ -118,24 +125,21 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void saveRecipeToFirestore(String title, String ingredients, String steps,
                                        String category, String videoUrl, String imageUrl) {
-        String docId = firestore.collection("recipes").document().getId();
-
-        Recipe recipe = new Recipe(docId, title, ingredients, steps, category, videoUrl, imageUrl);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         firestore.collection("recipes")
-                .add(recipe)
-                .addOnSuccessListener(documentReference  -> {
-                    binding.progressBar.setVisibility(View.GONE);
+                .add(new Recipe("", title, ingredients, steps, category, videoUrl, imageUrl, userId))
+                .addOnSuccessListener(documentReference -> {
+                    binding.progressBar.setVisibility(android.view.View.GONE);
                     binding.addRecipeButton.setEnabled(true);
                     Toast.makeText(this, "تم إضافة الوصفة بنجاح", Toast.LENGTH_SHORT).show();
 
-                    recipe.setDocumentId(documentReference.getId());
+                    Recipe newRecipe = new Recipe(documentReference.getId(), title, ingredients, steps, category, videoUrl, imageUrl, userId);
 
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("newRecipe", recipe);
+                    resultIntent.putExtra("newRecipe", newRecipe);
                     setResult(RESULT_OK, resultIntent);
                     finish();
-
                 })
                 .addOnFailureListener(e -> {
                     binding.progressBar.setVisibility(android.view.View.GONE);
@@ -143,4 +147,5 @@ public class AddRecipeActivity extends AppCompatActivity {
                     Toast.makeText(this, "فشل إضافة الوصفة: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
+
 }

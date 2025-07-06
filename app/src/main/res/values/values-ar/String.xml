@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق وصفاتي</string>
+    <string name="don_t_have_an_account_register_here">ليس لديك حساب؟ سجل هنا</string>
+    <string name="app_logo">شعار التطبيق</string>
+    <string name="my_recipes_app">تطبيقي للوصفات</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="remember_me">تذكرني</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="create_an_account">إنشاء حساب</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="register">تسجيل</string>
+    <string name="already_have_an_account_login_here">لديك حساب؟ سجل الدخول هنا</string>
+    <string name="name">الاسم</string>
+    <string name="user_photo">صورة المستخدم</string>
+    <string name="create_new_account">إنشاء حساب جديد</string>
+    <string name="add_recipe">إضافة وصفة جديدة</string>
+    <string name="recipe_image">صورة الوصفة</string>
+    <string name="recipe_title">عنوان الوصفة</string>
+    <string name="category">الفئة</string>
+    <string name="ingredients_comma_separated">المكونات (مفصولة بفواصل)</string>
+    <string name="steps_comma_separated">الخطوات (مفصولة بفواصل)</string>
+    <string name="youtube_video_url">رابط فيديو يوتيوب</string>
+    <string name="title">العنوان</string>
+    <string name="update_recipe">تحديث الوصفة</string>
+    <string name="ingredients">المكونات:</string>
+    <string name="steps">الخطوات:</string>
+    <string name="edit">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="user_name">اسم المستخدم</string>
+    <string name="user_example_com">user@example.com</string>
+    <string name="user_image">صورة المستخدم</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="recipeshare">مشاركة الوصفة</string>
+    <string name="Language">تبديل اللغة</string>
+
+    <string-array name="countries_array">
+        <item>فلسطين</item>
+        <item>الأردن</item>
+        <item>مصر</item>
+        <item>سوريا</item>
+        <item>لبنان</item>
+    </string-array>
+
+    <string-array name="categories_array">
+        <item>الكل</item>
+        <item>المقبلات</item>
+        <item>الأطباق الرئيسية</item>
+        <item>الحلويات</item>
+        <item>المشروبات</item>
+    </string-array>
+</resources>
