@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">ProjectFirebaseMini Application</string>
+    <string name="don_t_have_an_account_register_here">Don\'t have an account? Register here</string>
+    <string name="app_logo">App Logo</string>
+    <string name="my_recipes_app">My Recipes App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="login">Login</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account_login_here">Already have an account? Login here</string>
+    <string name="name">Name</string>
+    <string name="user_photo">User photo</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="add_recipe">Add New Recipe</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="recipe_title">Recipe Title</string>
+    <string name="category">Category</string>
+    <string name="ingredients_comma_separated">Ingredients (comma separated)</string>
+    <string name="steps_comma_separated">Steps (comma separated)</string>
+    <string name="youtube_video_url">YouTube Video URL</string>
+    <string name="title">Title</string>
+    <string name="update_recipe">Update Recipe</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="steps">Steps:</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="user_name">User Name</string>
+    <string name="user_example_com">user@example.com</string>
+    <string name="user_image">صورة المستخدم</string>
+    <string name="profile">Profile</string>
+    <string name="recipeshare">RecipeShare</string>
+
+
+    <string-array name="countries_array">
+        <item>Palestine</item>
+        <item>Jordan</item>
+        <item>Egypt</item>
+        <item>Syria</item>
+        <item>Lebanon</item>
+    </string-array>
+
+    <string-array name="categories_array">
+        <item>All</item>
+        <item>Appetizers</item>
+        <item>Main Dishes</item>
+        <item>Desserts</item>
+        <item>Drinks</item>
+    </string-array>
+
+
+
+</resources>

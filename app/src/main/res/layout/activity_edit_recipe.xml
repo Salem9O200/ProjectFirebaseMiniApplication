@@ -1,0 +1,104 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/screenTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Recipe"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:layout_marginBottom="24dp" />
+
+        <ImageView
+            android:id="@+id/recipeImageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="12dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_border"
+            android:contentDescription="Recipe Image" />
+
+        <Button
+            android:id="@+id/selectImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Image"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/orange"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe Title"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/ingredientsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingredients (comma separated)"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/stepsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="top"
+            android:hint="Steps (comma separated)"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp" />
+
+        <!-- هنا نضيف Spinner بدل EditText للفئة -->
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/videoUrlEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="YouTube Video URL"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/updateRecipeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Recipe"
+            android:backgroundTint="@color/orange"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>
