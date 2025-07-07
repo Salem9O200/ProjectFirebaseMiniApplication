@@ -123,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(RegisterActivity.this, "فشل الحصول على رابط الصورة", Toast.LENGTH_SHORT).show();
                         }
-                        createFirebaseAccount(name, email, password, country, imageUrl);
                     }
 
                     @Override

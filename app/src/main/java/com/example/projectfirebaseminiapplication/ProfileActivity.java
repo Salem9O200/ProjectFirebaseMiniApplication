@@ -25,13 +25,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
     private ArrayList<Recipe> allRecipes = new ArrayList<>();
-    private ArrayList<Recipe> filteredRecipes = new ArrayList<>();
+    private ArrayList<Recipe> userRecipes = new ArrayList<>();
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private RecipeAdapter adapter;
     private static final int ADD_RECIPE_REQUEST_CODE = 101;
-
-    private ArrayList<Recipe> userRecipes;
 
 
     @Override
@@ -112,9 +110,11 @@ public class ProfileActivity extends AppCompatActivity {
                         Recipe recipe = document.toObject(Recipe.class);
                         recipe.setDocumentId(document.getId());
                         userRecipes.add(recipe);
+
                     }
-                    adapter.notifyDataSetChanged();
+                    adapter.setRecipeList(userRecipes);
                     binding.progressBar.setVisibility(View.GONE);
+
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "فشل في تحميل الوصفات", Toast.LENGTH_SHORT).show();

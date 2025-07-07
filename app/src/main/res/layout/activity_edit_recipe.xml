@@ -67,7 +67,7 @@
             android:background="@drawable/edittext_background"
             android:padding="12dp" />
 
-        <!-- هنا نضيف Spinner بدل EditText للفئة -->
+
         <Spinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"

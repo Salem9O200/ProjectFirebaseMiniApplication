@@ -43,6 +43,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         Recipe recipe = recipeList.get(position);
         holder.binding.recipeNameTextView.setText(recipe.getName());
         holder.binding.recipeCategoryTextView.setText(recipe.getCategory());
+        holder.bind(recipe);
 
         Glide.with(holder.itemView.getContext())
                 .load(recipe.getImageUrl())

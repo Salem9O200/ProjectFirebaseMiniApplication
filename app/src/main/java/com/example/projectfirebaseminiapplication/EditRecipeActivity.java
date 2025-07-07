@@ -34,7 +34,7 @@ public class EditRecipeActivity extends AppCompatActivity {
 
     private FirebaseFirestore firestore;
 
-    private List<String> categoriesList = new ArrayList<>();
+    private ArrayList<String> categoriesList = new ArrayList<>();
 
     private ActivityResultLauncher<String> pickImageLauncher;
 
@@ -90,7 +90,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     binding.categorySpinner.setAdapter(adapter);
 
-                    // اختيار الفئة الحالية
                     int pos = categoriesList.indexOf(currentRecipe.getCategory());
                     if (pos >= 0) {
                         binding.categorySpinner.setSelection(pos);
@@ -155,7 +154,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // استخدم الصورة القديمة
             saveUpdatedRecipe(title, ingredients, steps, category, videoUrl, currentRecipe.getImageUrl());
         }
     }
