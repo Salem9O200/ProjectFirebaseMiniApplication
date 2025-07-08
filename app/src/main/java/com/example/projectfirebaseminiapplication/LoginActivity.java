@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         CloudinaryHelper.init(this);
         FirebaseApp.initializeApp(this);
-
         firebaseAuth = FirebaseAuth.getInstance();
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 

@@ -103,31 +103,31 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         return builder.toString();
     }
 
-    private void setupListeners() {
-        binding.videoUrlTextView.setOnClickListener(v -> {
-            String url = recipe.getVideoUrl();
-            if (!TextUtils.isEmpty(url)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        private void setupListeners() {
+            binding.videoUrlTextView.setOnClickListener(v -> {
+                String url = recipe.getVideoUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                }
+            });
+
+            binding.editIcon.setOnClickListener(v -> {
+                Intent intent = new Intent(this, EditRecipeActivity.class);
+                intent.putExtra("recipe", recipe);
                 startActivity(intent);
-            }
-        });
+                finish();
+            });
 
-        binding.editIcon.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EditRecipeActivity.class);
-            intent.putExtra("recipe", recipe);
-            startActivity(intent);
-            finish();
-        });
-
-        binding.deleteIcon.setOnClickListener(v -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("حذف الوصفة")
-                    .setMessage("هل أنت متأكد من حذف هذه الوصفة؟")
-                    .setPositiveButton("نعم", (dialog, which) -> deleteRecipe())
-                    .setNegativeButton("لا", null)
-                    .show();
-        });
-    }
+            binding.deleteIcon.setOnClickListener(v -> {
+                new AlertDialog.Builder(this)
+                        .setTitle("حذف الوصفة")
+                        .setMessage("هل أنت متأكد من حذف هذه الوصفة؟")
+                        .setPositiveButton("نعم", (dialog, which) -> deleteRecipe())
+                        .setNegativeButton("لا", null)
+                        .show();
+            });
+        }
 
     private void deleteRecipe() {
         binding.progressBar.setVisibility(View.VISIBLE);

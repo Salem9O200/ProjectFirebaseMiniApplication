@@ -116,36 +116,4 @@ public class AddRecipeActivity extends AppCompatActivity {
         void onFailure(String errorMessage);
     }
 
-    private void uploadImageToCloudinary(Uri imageUri, ImageUploadCallback callback) {
-        binding.recipeImageView.postDelayed(() -> {
-            String fakeUrl = "https://res.cloudinary.com/ddsiz8xnl/image/upload/v1751532736/maqluba_tdiajq.jpg";
-            callback.onSuccess(fakeUrl);
-        }, 2000);
-    }
-
-    private void saveRecipeToFirestore(String title, String ingredients, String steps,
-                                       String category, String videoUrl, String imageUrl) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        firestore.collection("recipes")
-                .add(new Recipe("", title, ingredients, steps, category, videoUrl, imageUrl, userId))
-                .addOnSuccessListener(documentReference -> {
-                    binding.progressBar.setVisibility(android.view.View.GONE);
-                    binding.addRecipeButton.setEnabled(true);
-                    Toast.makeText(this, "تم إضافة الوصفة بنجاح", Toast.LENGTH_SHORT).show();
-
-                    Recipe newRecipe = new Recipe(documentReference.getId(), title, ingredients, steps, category, videoUrl, imageUrl, userId);
-
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("newRecipe", newRecipe);
-                    setResult(RESULT_OK, resultIntent);
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    binding.progressBar.setVisibility(android.view.View.GONE);
-                    binding.addRecipeButton.setEnabled(true);
-                    Toast.makeText(this, "فشل إضافة الوصفة: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
 }
